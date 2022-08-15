@@ -1,13 +1,15 @@
 //
-// Solution: opengl-blog
-// Project: window
+// Solution: OpenGLBlog
+// Project: Extensions
 // Module: Source.cpp
 // Author: Brian (openglblog@gmail.com)
 // Date: 2022-08-15
 //
 
+#include <iostream>
 #include <stdlib.h>
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 int main(int argc, char** argv)
@@ -29,6 +31,27 @@ int main(int argc, char** argv)
 
 	// Set the current OpenGL context
 	glfwMakeContextCurrent(pWindow);
+
+	// Attempt to initialize GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		exit(EXIT_FAILURE);
+	}
+
+	// Print info about the graphics hardware
+	std::cout << "- Shading Language = " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+	std::cout << "- Version = " << glGetString(GL_VERSION) << std::endl;
+	std::cout << "- Vendor = " << glGetString(GL_VENDOR) << std::endl;
+	std::cout << "- Renderer = " << glGetString(GL_RENDERER) << std::endl << std::endl;
+
+	// Print the supported extensions
+	GLint numExtensions = 0;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
+	std::cout << "- Extensions" << std::endl;
+	for (GLint i = 0; i < numExtensions; i++)
+	{
+		std::cout << glGetStringi(GL_EXTENSIONS, i) << std::endl;
+	}
 
 	// Begin the draw loop
 	while (!glfwWindowShouldClose(pWindow))
